@@ -6081,133 +6081,78 @@ __turbopack_context__.s([
     ()=>InventoryList
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/card.tsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-alert.js [app-client] (ecmascript) <export default as AlertCircle>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2d$big$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-check-big.js [app-client] (ecmascript) <export default as CheckCircle>");
 'use client';
-;
-;
 ;
 function InventoryList({ items, selectedId, onSelect }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "space-y-2",
-        children: items.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
-            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
-                className: "pt-6 text-center text-slate-500 text-sm",
-                children: "No items found"
-            }, void 0, false, {
-                fileName: "[project]/components/inventory/inventory-list.tsx",
-                lineNumber: 26,
-                columnNumber: 11
-            }, this)
+        children: items.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "p-4 text-sm text-slate-500",
+            children: "No items found"
         }, void 0, false, {
             fileName: "[project]/components/inventory/inventory-list.tsx",
-            lineNumber: 25,
+            lineNumber: 16,
             columnNumber: 9
-        }, this) : items.map((item)=>{
-            const isLowStock = item.quantity < item.minThreshold;
-            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                onClick: ()=>onSelect(item),
-                className: `w-full text-left p-4 rounded-lg border-2 transition ${selectedId === item.id ? 'border-teal-500 bg-teal-50' : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'}`,
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex items-start justify-between gap-2",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "flex-1 min-w-0",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                        className: "font-semibold text-slate-900",
-                                        children: item.name
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/inventory/inventory-list.tsx",
-                                        lineNumber: 45,
-                                        columnNumber: 19
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-xs text-slate-600",
-                                        children: item.supplier
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/inventory/inventory-list.tsx",
-                                        lineNumber: 46,
-                                        columnNumber: 19
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/components/inventory/inventory-list.tsx",
-                                lineNumber: 44,
-                                columnNumber: 17
-                            }, this),
-                            isLowStock ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__["AlertCircle"], {
-                                className: "w-5 h-5 text-red-600 flex-shrink-0"
-                            }, void 0, false, {
-                                fileName: "[project]/components/inventory/inventory-list.tsx",
-                                lineNumber: 49,
-                                columnNumber: 19
-                            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2d$big$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle$3e$__["CheckCircle"], {
-                                className: "w-5 h-5 text-green-600 flex-shrink-0"
-                            }, void 0, false, {
-                                fileName: "[project]/components/inventory/inventory-list.tsx",
-                                lineNumber: 51,
-                                columnNumber: 19
-                            }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/components/inventory/inventory-list.tsx",
-                        lineNumber: 43,
-                        columnNumber: 15
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "mt-3 flex items-center justify-between",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-sm font-bold text-slate-900",
-                                        children: item.quantity
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/inventory/inventory-list.tsx",
-                                        lineNumber: 56,
-                                        columnNumber: 19
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-xs text-slate-600",
-                                        children: item.unit
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/inventory/inventory-list.tsx",
-                                        lineNumber: 57,
-                                        columnNumber: 19
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/components/inventory/inventory-list.tsx",
-                                lineNumber: 55,
-                                columnNumber: 17
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: `text-xs font-semibold px-2 py-1 rounded ${isLowStock ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`,
-                                children: isLowStock ? 'Low' : 'OK'
-                            }, void 0, false, {
-                                fileName: "[project]/components/inventory/inventory-list.tsx",
-                                lineNumber: 59,
-                                columnNumber: 17
-                            }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/components/inventory/inventory-list.tsx",
-                        lineNumber: 54,
-                        columnNumber: 15
-                    }, this)
-                ]
-            }, item.id, true, {
+        }, this) : items.map((it)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                onClick: ()=>onSelect(it),
+                className: `w-full text-left px-3 py-2 rounded transition ${selectedId === it.id ? 'bg-teal-50 border-l-4 border-teal-600' : 'hover:bg-slate-50'}`,
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "flex justify-between",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "font-medium text-slate-900",
+                                    children: it.name
+                                }, void 0, false, {
+                                    fileName: "[project]/components/inventory/inventory-list.tsx",
+                                    lineNumber: 28,
+                                    columnNumber: 17
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "text-xs text-slate-500",
+                                    children: [
+                                        it.supplier,
+                                        " • ",
+                                        it.category
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/components/inventory/inventory-list.tsx",
+                                    lineNumber: 29,
+                                    columnNumber: 17
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/components/inventory/inventory-list.tsx",
+                            lineNumber: 27,
+                            columnNumber: 15
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "text-sm font-semibold text-slate-700",
+                            children: [
+                                it.quantity,
+                                " ",
+                                it.unit
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/components/inventory/inventory-list.tsx",
+                            lineNumber: 31,
+                            columnNumber: 15
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/components/inventory/inventory-list.tsx",
+                    lineNumber: 26,
+                    columnNumber: 13
+                }, this)
+            }, it.id, false, {
                 fileName: "[project]/components/inventory/inventory-list.tsx",
-                lineNumber: 34,
-                columnNumber: 13
-            }, this);
-        })
+                lineNumber: 19,
+                columnNumber: 11
+            }, this))
     }, void 0, false, {
         fileName: "[project]/components/inventory/inventory-list.tsx",
-        lineNumber: 23,
+        lineNumber: 14,
         columnNumber: 5
     }, this);
 }
@@ -7395,6 +7340,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$inventory$2f$i
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$inventory$2f$inventory$2d$detail$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/inventory/inventory-detail.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$inventory$2f$inventory$2d$modal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/inventory/inventory-modal.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$inventory$2f$supply$2d$request$2d$list$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/inventory/supply-request-list.tsx [app-client] (ecmascript)");
+// ✅ Import ALL types + hook from context (no duplicates now)
 var __TURBOPACK__imported__module__$5b$project$5d2f$context$2f$app$2d$context$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/context/app-context.tsx [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
@@ -7441,16 +7387,12 @@ function InventoryManagement({ userRole }) {
         deleteInventoryItem(id);
         setSelectedItem(null);
     };
-    const handleApproveRequest = (id)=>{
-        updateSupplyRequest(id, {
+    const handleApproveRequest = (id)=>updateSupplyRequest(id, {
             status: 'Approved'
         });
-    };
-    const handleRejectRequest = (id)=>{
-        updateSupplyRequest(id, {
+    const handleRejectRequest = (id)=>updateSupplyRequest(id, {
             status: 'Rejected'
         });
-    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "space-y-6",
         children: [
@@ -7464,7 +7406,7 @@ function InventoryManagement({ userRole }) {
                                 children: "Inventory Management"
                             }, void 0, false, {
                                 fileName: "[project]/components/inventory/inventory-management.tsx",
-                                lineNumber: 68,
+                                lineNumber: 86,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -7472,13 +7414,13 @@ function InventoryManagement({ userRole }) {
                                 children: "Track dental supplies and stock levels"
                             }, void 0, false, {
                                 fileName: "[project]/components/inventory/inventory-management.tsx",
-                                lineNumber: 69,
+                                lineNumber: 87,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/inventory/inventory-management.tsx",
-                        lineNumber: 67,
+                        lineNumber: 85,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -7492,20 +7434,20 @@ function InventoryManagement({ userRole }) {
                                 className: "w-4 h-4 mr-2"
                             }, void 0, false, {
                                 fileName: "[project]/components/inventory/inventory-management.tsx",
-                                lineNumber: 78,
+                                lineNumber: 97,
                                 columnNumber: 11
                             }, this),
                             "Add Item"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/inventory/inventory-management.tsx",
-                        lineNumber: 71,
+                        lineNumber: 90,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/inventory/inventory-management.tsx",
-                lineNumber: 66,
+                lineNumber: 84,
                 columnNumber: 7
             }, this),
             lowStockItems.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -7519,7 +7461,7 @@ function InventoryManagement({ userRole }) {
                                 className: "w-5 h-5 text-orange-600 mt-0.5"
                             }, void 0, false, {
                                 fileName: "[project]/components/inventory/inventory-management.tsx",
-                                lineNumber: 88,
+                                lineNumber: 107,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7534,7 +7476,7 @@ function InventoryManagement({ userRole }) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/inventory/inventory-management.tsx",
-                                        lineNumber: 90,
+                                        lineNumber: 109,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -7542,29 +7484,29 @@ function InventoryManagement({ userRole }) {
                                         children: "Please restock these items soon to avoid running out."
                                     }, void 0, false, {
                                         fileName: "[project]/components/inventory/inventory-management.tsx",
-                                        lineNumber: 93,
+                                        lineNumber: 113,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/inventory/inventory-management.tsx",
-                                lineNumber: 89,
+                                lineNumber: 108,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/inventory/inventory-management.tsx",
-                        lineNumber: 87,
+                        lineNumber: 106,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/components/inventory/inventory-management.tsx",
-                    lineNumber: 86,
+                    lineNumber: 105,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/inventory/inventory-management.tsx",
-                lineNumber: 85,
+                lineNumber: 104,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7579,7 +7521,7 @@ function InventoryManagement({ userRole }) {
                                     children: "Total Items"
                                 }, void 0, false, {
                                     fileName: "[project]/components/inventory/inventory-management.tsx",
-                                    lineNumber: 106,
+                                    lineNumber: 126,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -7587,18 +7529,18 @@ function InventoryManagement({ userRole }) {
                                     children: inventory.length
                                 }, void 0, false, {
                                     fileName: "[project]/components/inventory/inventory-management.tsx",
-                                    lineNumber: 107,
+                                    lineNumber: 127,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/inventory/inventory-management.tsx",
-                            lineNumber: 105,
+                            lineNumber: 125,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/inventory/inventory-management.tsx",
-                        lineNumber: 104,
+                        lineNumber: 124,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -7610,7 +7552,7 @@ function InventoryManagement({ userRole }) {
                                     children: "Low Stock Items"
                                 }, void 0, false, {
                                     fileName: "[project]/components/inventory/inventory-management.tsx",
-                                    lineNumber: 112,
+                                    lineNumber: 132,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -7618,18 +7560,18 @@ function InventoryManagement({ userRole }) {
                                     children: lowStockItems.length
                                 }, void 0, false, {
                                     fileName: "[project]/components/inventory/inventory-management.tsx",
-                                    lineNumber: 113,
+                                    lineNumber: 133,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/inventory/inventory-management.tsx",
-                            lineNumber: 111,
+                            lineNumber: 131,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/inventory/inventory-management.tsx",
-                        lineNumber: 110,
+                        lineNumber: 130,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -7641,7 +7583,7 @@ function InventoryManagement({ userRole }) {
                                     children: "Pending Requests"
                                 }, void 0, false, {
                                     fileName: "[project]/components/inventory/inventory-management.tsx",
-                                    lineNumber: 118,
+                                    lineNumber: 138,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -7649,24 +7591,24 @@ function InventoryManagement({ userRole }) {
                                     children: supplyRequests.filter((r)=>r.status === 'Pending').length
                                 }, void 0, false, {
                                     fileName: "[project]/components/inventory/inventory-management.tsx",
-                                    lineNumber: 119,
+                                    lineNumber: 139,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/inventory/inventory-management.tsx",
-                            lineNumber: 117,
+                            lineNumber: 137,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/inventory/inventory-management.tsx",
-                        lineNumber: 116,
+                        lineNumber: 136,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/inventory/inventory-management.tsx",
-                lineNumber: 103,
+                lineNumber: 123,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7678,7 +7620,7 @@ function InventoryManagement({ userRole }) {
                         children: "Inventory Items"
                     }, void 0, false, {
                         fileName: "[project]/components/inventory/inventory-management.tsx",
-                        lineNumber: 128,
+                        lineNumber: 148,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -7691,13 +7633,13 @@ function InventoryManagement({ userRole }) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/inventory/inventory-management.tsx",
-                        lineNumber: 138,
+                        lineNumber: 158,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/inventory/inventory-management.tsx",
-                lineNumber: 127,
+                lineNumber: 147,
                 columnNumber: 7
             }, this),
             activeTab === 'inventory' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7713,12 +7655,12 @@ function InventoryManagement({ userRole }) {
                                         children: "Filters"
                                     }, void 0, false, {
                                         fileName: "[project]/components/inventory/inventory-management.tsx",
-                                        lineNumber: 156,
+                                        lineNumber: 176,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/inventory/inventory-management.tsx",
-                                    lineNumber: 155,
+                                    lineNumber: 175,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -7731,7 +7673,7 @@ function InventoryManagement({ userRole }) {
                                                     className: "absolute left-3 top-3 w-4 h-4 text-slate-400"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/inventory/inventory-management.tsx",
-                                                    lineNumber: 160,
+                                                    lineNumber: 180,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -7741,13 +7683,13 @@ function InventoryManagement({ userRole }) {
                                                     className: "pl-10"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/inventory/inventory-management.tsx",
-                                                    lineNumber: 161,
+                                                    lineNumber: 181,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/inventory/inventory-management.tsx",
-                                            lineNumber: 159,
+                                            lineNumber: 179,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7757,7 +7699,7 @@ function InventoryManagement({ userRole }) {
                                                     children: "Category"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/inventory/inventory-management.tsx",
-                                                    lineNumber: 170,
+                                                    lineNumber: 190,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7771,18 +7713,18 @@ function InventoryManagement({ userRole }) {
                                                             children: cat
                                                         }, cat, false, {
                                                             fileName: "[project]/components/inventory/inventory-management.tsx",
-                                                            lineNumber: 173,
+                                                            lineNumber: 193,
                                                             columnNumber: 23
                                                         }, this))
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/inventory/inventory-management.tsx",
-                                                    lineNumber: 171,
+                                                    lineNumber: 191,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/inventory/inventory-management.tsx",
-                                            lineNumber: 169,
+                                            lineNumber: 189,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -7795,7 +7737,7 @@ function InventoryManagement({ userRole }) {
                                                     className: "rounded"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/inventory/inventory-management.tsx",
-                                                    lineNumber: 189,
+                                                    lineNumber: 209,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -7803,30 +7745,30 @@ function InventoryManagement({ userRole }) {
                                                     children: "Low Stock Only"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/inventory/inventory-management.tsx",
-                                                    lineNumber: 195,
+                                                    lineNumber: 215,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/inventory/inventory-management.tsx",
-                                            lineNumber: 188,
+                                            lineNumber: 208,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/inventory/inventory-management.tsx",
-                                    lineNumber: 158,
+                                    lineNumber: 178,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/inventory/inventory-management.tsx",
-                            lineNumber: 154,
+                            lineNumber: 174,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/inventory/inventory-management.tsx",
-                        lineNumber: 153,
+                        lineNumber: 173,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7834,15 +7776,15 @@ function InventoryManagement({ userRole }) {
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$inventory$2f$inventory$2d$list$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["InventoryList"], {
                             items: filteredInventory,
                             selectedId: selectedItem?.id,
-                            onSelect: setSelectedItem
+                            onSelect: (item)=>setSelectedItem(item)
                         }, void 0, false, {
                             fileName: "[project]/components/inventory/inventory-management.tsx",
-                            lineNumber: 203,
+                            lineNumber: 223,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/inventory/inventory-management.tsx",
-                        lineNumber: 202,
+                        lineNumber: 222,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7853,7 +7795,7 @@ function InventoryManagement({ userRole }) {
                             onDelete: ()=>handleDeleteItem(selectedItem.id)
                         }, void 0, false, {
                             fileName: "[project]/components/inventory/inventory-management.tsx",
-                            lineNumber: 213,
+                            lineNumber: 233,
                             columnNumber: 15
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -7863,28 +7805,28 @@ function InventoryManagement({ userRole }) {
                                     children: "Select an item to view details"
                                 }, void 0, false, {
                                     fileName: "[project]/components/inventory/inventory-management.tsx",
-                                    lineNumber: 221,
+                                    lineNumber: 241,
                                     columnNumber: 19
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/inventory/inventory-management.tsx",
-                                lineNumber: 220,
+                                lineNumber: 240,
                                 columnNumber: 17
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/components/inventory/inventory-management.tsx",
-                            lineNumber: 219,
+                            lineNumber: 239,
                             columnNumber: 15
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/inventory/inventory-management.tsx",
-                        lineNumber: 211,
+                        lineNumber: 231,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/inventory/inventory-management.tsx",
-                lineNumber: 151,
+                lineNumber: 171,
                 columnNumber: 9
             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$inventory$2f$supply$2d$request$2d$list$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SupplyRequestList"], {
                 requests: supplyRequests,
@@ -7892,7 +7834,7 @@ function InventoryManagement({ userRole }) {
                 onReject: handleRejectRequest
             }, void 0, false, {
                 fileName: "[project]/components/inventory/inventory-management.tsx",
-                lineNumber: 228,
+                lineNumber: 248,
                 columnNumber: 9
             }, this),
             isModalOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$inventory$2f$inventory$2d$modal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["InventoryModal"], {
@@ -7905,17 +7847,17 @@ function InventoryManagement({ userRole }) {
                 }
             }, void 0, false, {
                 fileName: "[project]/components/inventory/inventory-management.tsx",
-                lineNumber: 236,
+                lineNumber: 257,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/inventory/inventory-management.tsx",
-        lineNumber: 65,
+        lineNumber: 83,
         columnNumber: 5
     }, this);
 }
-_s(InventoryManagement, "pIUnjPDATF7LUvDRoXqZc35Em0c=", false, function() {
+_s(InventoryManagement, "CiJupNTeuZbWgIN6jBT2sfBW/H0=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$context$2f$app$2d$context$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAppContext"]
     ];

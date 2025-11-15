@@ -1,30 +1,53 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Search, Plus, AlertTriangle } from 'lucide-react'
 import { InventoryList } from './inventory-list'
 import { InventoryDetail } from './inventory-detail'
 import { InventoryModal } from './inventory-modal'
 import { SupplyRequestList } from './supply-request-list'
-import { useAppContext } from '@/context/app-context'
+
+// ✅ Import ALL types + hook from context (no duplicates now)
+import {
+  useAppContext,
+  type InventoryItem,
+  type SupplyRequest,
+} from '@/context/app-context'
 
 interface InventoryManagementProps {
   userRole: string
 }
 
+type InventoryInput = Omit<InventoryItem, 'id' | 'lastRestocked'>
+
 export function InventoryManagement({ userRole }: InventoryManagementProps) {
-  const { inventory, addInventoryItem, updateInventoryItem, deleteInventoryItem, supplyRequests, updateSupplyRequest } = useAppContext()
+  const {
+    inventory,
+    addInventoryItem,
+    updateInventoryItem,
+    deleteInventoryItem,
+    supplyRequests,
+    updateSupplyRequest,
+  } = useAppContext()
+
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedItem, setSelectedItem] = useState(null)
+  const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [filterCategory, setFilterCategory] = useState('All')
   const [showLowStock, setShowLowStock] = useState(false)
-  const [activeTab, setActiveTab] = useState('inventory')
+  const [activeTab, setActiveTab] = useState<'inventory' | 'requests'>('inventory')
 
-  const categories = ['Gloves', 'Anesthesia', 'Braces Wire', 'Filling Material', 'Cleaning Supplies', 'Other']
+  const categories = [
+    'Gloves',
+    'Anesthesia',
+    'Braces Wire',
+    'Filling Material',
+    'Cleaning Supplies',
+    'Other',
+  ]
 
   const lowStockItems = inventory.filter((item) => item.quantity < item.minThreshold)
 
@@ -37,29 +60,24 @@ export function InventoryManagement({ userRole }: InventoryManagementProps) {
     .filter((item) => filterCategory === 'All' || item.category === filterCategory)
     .filter((item) => !showLowStock || item.quantity < item.minThreshold)
 
-  const handleAddItem = (formData) => {
+  const handleAddItem = (formData: InventoryInput) => {
     addInventoryItem(formData)
     setIsModalOpen(false)
   }
 
-  const handleUpdateItem = (id, formData) => {
+  const handleUpdateItem = (id: string, formData: Partial<InventoryItem>) => {
     updateInventoryItem(id, formData)
     setSelectedItem(null)
     setIsModalOpen(false)
   }
 
-  const handleDeleteItem = (id) => {
+  const handleDeleteItem = (id: string) => {
     deleteInventoryItem(id)
     setSelectedItem(null)
   }
 
-  const handleApproveRequest = (id) => {
-    updateSupplyRequest(id, { status: 'Approved' })
-  }
-
-  const handleRejectRequest = (id) => {
-    updateSupplyRequest(id, { status: 'Rejected' })
-  }
+  const handleApproveRequest = (id: string) => updateSupplyRequest(id, { status: 'Approved' })
+  const handleRejectRequest = (id: string) => updateSupplyRequest(id, { status: 'Rejected' })
 
   return (
     <div className="space-y-6">
@@ -68,6 +86,7 @@ export function InventoryManagement({ userRole }: InventoryManagementProps) {
           <h1 className="text-3xl font-bold text-slate-900">Inventory Management</h1>
           <p className="text-slate-600 mt-1">Track dental supplies and stock levels</p>
         </div>
+
         <Button
           onClick={() => {
             setSelectedItem(null)
@@ -88,7 +107,8 @@ export function InventoryManagement({ userRole }: InventoryManagementProps) {
               <AlertTriangle className="w-5 h-5 text-orange-600 mt-0.5" />
               <div>
                 <p className="font-semibold text-orange-900">
-                  {lowStockItems.length} item{lowStockItems.length !== 1 ? 's' : ''} below minimum threshold
+                  {lowStockItems.length} item{lowStockItems.length !== 1 ? 's' : ''} below minimum
+                  threshold
                 </p>
                 <p className="text-sm text-orange-700 mt-1">
                   Please restock these items soon to avoid running out.
@@ -99,7 +119,7 @@ export function InventoryManagement({ userRole }: InventoryManagementProps) {
         </Card>
       )}
 
-      {/* Summary Stats */}
+      {/* Summary */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardContent className="pt-6">
@@ -149,7 +169,7 @@ export function InventoryManagement({ userRole }: InventoryManagementProps) {
 
       {activeTab === 'inventory' ? (
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Left Panel: Filters */}
+          {/* Filters */}
           <div className="lg:col-span-1">
             <Card>
               <CardHeader>
@@ -198,16 +218,16 @@ export function InventoryManagement({ userRole }: InventoryManagementProps) {
             </Card>
           </div>
 
-          {/* Center Panel: Items List */}
+          {/* Inventory List */}
           <div className="lg:col-span-1">
             <InventoryList
               items={filteredInventory}
               selectedId={selectedItem?.id}
-              onSelect={setSelectedItem}
+              onSelect={(item) => setSelectedItem(item)}
             />
           </div>
 
-          {/* Right Panel: Item Details */}
+          {/* Item Detail */}
           <div className="lg:col-span-2">
             {selectedItem ? (
               <InventoryDetail
@@ -232,6 +252,7 @@ export function InventoryManagement({ userRole }: InventoryManagementProps) {
         />
       )}
 
+      {/* Add / Edit Modal */}
       {isModalOpen && (
         <InventoryModal
           item={selectedItem}
