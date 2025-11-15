@@ -1,16 +1,22 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { X } from 'lucide-react'
-import type { Patient } from '@/context/app-context' // added
+import { Textarea } from '@/components/ui/textarea'
+import { type Patient } from '@/context/app-context'
 
 interface AppointmentModalProps {
   appointment: any
   services: string[]
-  patients: Patient[] // added
+  patients: Patient[]
   onSave: (data: any) => void
   onDelete?: () => void
   onClose: () => void
@@ -19,7 +25,7 @@ interface AppointmentModalProps {
 export function AppointmentModal({
   appointment,
   services,
-  patients, // added
+  patients,
   onSave,
   onDelete,
   onClose,
@@ -30,21 +36,33 @@ export function AppointmentModal({
     date: new Date().toISOString().split('T')[0],
     time: '09:00',
     service: services[0] || 'Cleaning',
+    doctorId: '',
     notes: '',
+    status: 'Pending' as 'Pending' | 'Confirmed' | 'Completed' | 'Cancelled',
   })
 
   useEffect(() => {
     if (appointment) {
       setFormData({
-        patientName: appointment.patientName,
-        patientId: appointment.patientId,
-        date: appointment.date,
-        time: appointment.time,
-        service: appointment.service,
-        notes: appointment.notes,
+        patientName: appointment.patientName || '',
+        patientId: appointment.patientId || '',
+        date: appointment.date || new Date().toISOString().split('T')[0],
+        time: appointment.time || '09:00',
+        service: appointment.service || services[0] || 'Cleaning',
+        doctorId: appointment.doctorId || '',
+        notes: appointment.notes || '',
+        status: appointment.status || 'Pending',
       })
+    } else {
+      setFormData((d) => ({ ...d, service: services[0] || d.service }))
     }
-  }, [appointment])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [appointment, services])
+
+  const timeSlots = [
+    '08:00', '09:00', '10:00', '11:00', '12:00',
+    '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'
+  ]
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -52,32 +70,30 @@ export function AppointmentModal({
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <Card className="w-full max-w-md">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-          <CardTitle>{appointment ? 'Edit Appointment' : 'New Appointment'}</CardTitle>
-          <button
-            onClick={onClose}
-            className="p-1 hover:bg-slate-100 rounded transition"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="text-sm font-medium text-slate-700">Patient</label>
+    <Dialog open={true} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle>{appointment ? 'Edit Appointment' : 'New Appointment'}</DialogTitle>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Patient</label>
+            <div className="flex gap-2">
               <select
-                required
                 value={formData.patientId}
                 onChange={(e) => {
-                  const id = e.target.value
-                  const p = patients.find((x) => x.id === id)
-                  setFormData({ ...formData, patientId: id, patientName: p ? p.name : '' })
+                  const pid = e.target.value
+                  const p = patients.find((x) => x.id === pid)
+                  setFormData({
+                    ...formData,
+                    patientId: pid,
+                    patientName: p ? p.name : '',
+                  })
                 }}
-                className="w-full mt-1 px-3 py-2 border border-slate-200 rounded text-sm"
+                className="flex-1 px-3 py-2 border rounded"
               >
-                <option value="">Select patient</option>
+                <option value="">-- select patient --</option>
                 {patients.map((p) => (
                   <option key={p.id} value={p.id}>
                     {p.name}
@@ -85,86 +101,78 @@ export function AppointmentModal({
                 ))}
               </select>
             </div>
+          </div>
 
+          <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-sm font-medium text-slate-700">Date</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Date</label>
               <Input
-                required
                 type="date"
                 value={formData.date}
                 onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                className="mt-1"
               />
             </div>
 
             <div>
-              <label className="text-sm font-medium text-slate-700">Time</label>
-              <Input
-                required
-                type="time"
+              <label className="block text-sm font-medium text-slate-700 mb-1">Time</label>
+              <select
                 value={formData.time}
                 onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                className="mt-1"
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-slate-700">Service</label>
-              <select
-                value={formData.service}
-                onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                className="w-full mt-1 px-3 py-2 border border-slate-200 rounded text-sm"
+                className="w-full px-3 py-2 border rounded"
               >
-                {services.map((s) => (
-                  <option key={s} value={s}>
-                    {s}
+                {timeSlots.map((t) => (
+                  <option key={t} value={t}>
+                    {t}
                   </option>
                 ))}
               </select>
             </div>
+          </div>
 
-            <div>
-              <label className="text-sm font-medium text-slate-700">Notes</label>
-              <textarea
-                value={formData.notes}
-                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                placeholder="Add any notes..."
-                className="w-full mt-1 px-3 py-2 border border-slate-200 rounded text-sm"
-                rows={3}
-              />
-            </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Service</label>
+            <select
+              value={formData.service}
+              onChange={(e) => setFormData({ ...formData, service: e.target.value })}
+              className="w-full px-3 py-2 border rounded"
+            >
+              {services.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
+            </select>
+          </div>
 
-            <div className="flex gap-2 pt-4">
-              {appointment && onDelete && (
-                <Button
-                  type="button"
-                  variant="destructive"
-                  onClick={onDelete}
-                  className="flex-1"
-                >
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Notes</label>
+            <Textarea
+              value={formData.notes}
+              onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+              rows={3}
+            />
+          </div>
+
+          <DialogFooter className="flex justify-between">
+            <div className="flex gap-2">
+              {onDelete && (
+                <Button variant="outline" onClick={onDelete} className="text-red-600 hover:bg-red-50">
                   Delete
                 </Button>
               )}
-              <Button
-                type="button"
-                variant="outline"
-                onClick={onClose}
-                className={appointment && onDelete ? '' : 'flex-1'}
-              >
+            </div>
+
+            <div className="flex gap-2">
+              <Button variant="outline" onClick={onClose}>
                 Cancel
               </Button>
-              <Button
-                type="submit"
-                className={`bg-teal-600 hover:bg-teal-700 text-white ${
-                  appointment && onDelete ? '' : 'flex-1'
-                }`}
-              >
-                {appointment ? 'Update' : 'Book'} Appointment
+              <Button type="submit" className="bg-teal-600 hover:bg-teal-700 text-white">
+                {appointment ? 'Save Changes' : 'Create Appointment'}
               </Button>
             </div>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   )
 }

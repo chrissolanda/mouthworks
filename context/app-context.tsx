@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useContext, useState, ReactNode } from 'react'
+import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 
 export interface Patient {
   id: string
@@ -30,12 +30,12 @@ export interface Appointment {
   id: string
   patientName: string
   patientId: string
-  date: string
-  time: string
+  date: string // YYYY-MM-DD
+  time: string // HH:mm
   service: string
   status: 'Pending' | 'Confirmed' | 'Completed' | 'Cancelled'
   notes: string
-  staffId?: string
+  doctorId?: string | null
 }
 
 export interface Treatment {
@@ -84,513 +84,216 @@ export interface SupplyRequest {
 }
 
 interface AppContextType {
-  // Patient management
+  // Patients
   patients: Patient[]
-  addPatient: (patient: Omit<Patient, 'id'>) => void
-  updatePatient: (id: string, patient: Partial<Patient>) => void
+  addPatient: (p: Omit<Patient, 'id'>) => Patient
+  updatePatient: (id: string, patch: Partial<Patient>) => void
   deletePatient: (id: string) => void
   getPatientById: (id: string) => Patient | undefined
-  
-  // Staff management
+
+  // Staff
   staff: Staff[]
-  addStaff: (staff: Omit<Staff, 'id'>) => void
-  updateStaff: (id: string, staff: Partial<Staff>) => void
+  addStaff: (s: Omit<Staff, 'id'>) => Staff
+  updateStaff: (id: string, patch: Partial<Staff>) => void
   deleteStaff: (id: string) => void
   getStaffById: (id: string) => Staff | undefined
 
-  // Appointment management
+  // Appointments
   appointments: Appointment[]
-  addAppointment: (appointment: Omit<Appointment, 'id'>) => void
-  updateAppointment: (id: string, appointment: Partial<Appointment>) => void
+  addAppointment: (a: Omit<Appointment, 'id'>) => Appointment
+  updateAppointment: (id: string, patch: Partial<Appointment>) => void
   deleteAppointment: (id: string) => void
   getAppointmentById: (id: string) => Appointment | undefined
 
-  // Treatment management
+  // Treatments
   treatments: Treatment[]
-  addTreatment: (treatment: Omit<Treatment, 'id'>) => void
-  updateTreatment: (id: string, treatment: Partial<Treatment>) => void
+  addTreatment: (t: Omit<Treatment, 'id'>) => Treatment
+  updateTreatment: (id: string, patch: Partial<Treatment>) => void
   deleteTreatment: (id: string) => void
   getTreatmentById: (id: string) => Treatment | undefined
 
-  // Payment management
+  // Payments
   payments: Payment[]
-  addPayment: (payment: Omit<Payment, 'id'>) => void
-  updatePayment: (id: string, payment: Partial<Payment>) => void
+  addPayment: (p: Omit<Payment, 'id' | 'date'> & { date?: string }) => Payment
+  updatePayment: (id: string, patch: Partial<Payment>) => void
   deletePayment: (id: string) => void
   getPaymentById: (id: string) => Payment | undefined
 
-  // Inventory management
+  // Inventory
   inventory: InventoryItem[]
-  addInventoryItem: (item: Omit<InventoryItem, 'id' | 'lastRestocked'>) => void
-  updateInventoryItem: (id: string, item: Partial<InventoryItem>) => void
+  addInventoryItem: (it: Omit<InventoryItem, 'id' | 'lastRestocked'>) => InventoryItem
+  updateInventoryItem: (id: string, patch: Partial<InventoryItem>) => void
   deleteInventoryItem: (id: string) => void
   getInventoryItemById: (id: string) => InventoryItem | undefined
 
   // Supply requests
   supplyRequests: SupplyRequest[]
-  addSupplyRequest: (request: Omit<SupplyRequest, 'id'>) => void
-  updateSupplyRequest: (id: string, request: Partial<SupplyRequest>) => void
+  addSupplyRequest: (r: Omit<SupplyRequest, 'id'>) => SupplyRequest
+  updateSupplyRequest: (id: string, patch: Partial<SupplyRequest>) => void
   deleteSupplyRequest: (id: string) => void
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined)
 
+function genId(prefix = '') {
+  return prefix + Date.now().toString(36) + Math.random().toString(36).slice(2, 8)
+}
+
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [patients, setPatients] = useState<Patient[]>([
-    {
-      id: '1',
-      name: 'John Doe',
-      email: 'john@example.com',
-      phone: '555-0101',
-      dob: '1985-03-15',
-      gender: 'M',
-      address: '123 Main St, City',
-      lastVisit: '2024-11-10',
-      balance: 250,
-      hasAppointment: true,
-    },
-    {
-      id: '2',
-      name: 'Jane Smith',
-      email: 'jane@example.com',
-      phone: '555-0102',
-      dob: '1990-07-22',
-      gender: 'F',
-      address: '456 Oak Ave, City',
-      lastVisit: '2024-10-28',
-      balance: 0,
-      hasAppointment: false,
-    },
-    {
-      id: '3',
-      name: 'Bob Johnson',
-      email: 'bob@example.com',
-      phone: '555-0103',
-      dob: '1988-11-05',
-      gender: 'M',
-      address: '789 Pine Rd, City',
-      lastVisit: '2024-11-05',
-      balance: 150,
-      hasAppointment: true,
-    },
-  ])
-
-  const [staff, setStaff] = useState<Staff[]>([
-    {
-      id: '1',
-      name: 'Dr. Maria Santos',
-      email: 'maria@mouthworks.com',
-      phone: '+63-917-123-4567',
-      role: 'dentist',
-      specialization: 'Orthodontics',
-      status: 'active',
-      joinDate: '2022-01-15',
-    },
-    {
-      id: '2',
-      name: 'Dr. Juan Dela Cruz',
-      email: 'juan@mouthworks.com',
-      phone: '+63-917-234-5678',
-      role: 'dentist',
-      specialization: 'Cosmetic Dentistry',
-      status: 'active',
-      joinDate: '2022-06-20',
-    },
-    {
-      id: '3',
-      name: 'Ana Garcia',
-      email: 'ana@mouthworks.com',
-      phone: '+63-917-345-6789',
-      role: 'receptionist',
-      status: 'active',
-      joinDate: '2023-02-10',
-    },
-    {
-      id: '4',
-      name: 'Carlos Reyes',
-      email: 'carlos@mouthworks.com',
-      phone: '+63-917-456-7890',
-      role: 'assistant',
-      status: 'active',
-      joinDate: '2023-05-05',
-    },
-  ])
-
-  const [appointments, setAppointments] = useState<Appointment[]>([
-    {
-      id: '1',
-      patientName: 'John Doe',
-      patientId: '1',
-      date: new Date().toISOString().split('T')[0],
-      time: '09:00',
-      service: 'Cleaning',
-      status: 'Confirmed',
-      notes: 'Regular checkup',
-    },
-    {
-      id: '2',
-      patientName: 'Jane Smith',
-      patientId: '2',
-      date: new Date().toISOString().split('T')[0],
-      time: '10:30',
-      service: 'Whitening',
-      status: 'Confirmed',
-      notes: 'Teeth whitening',
-    },
-    {
-      id: '3',
-      patientName: 'Bob Johnson',
-      patientId: '3',
-      date: new Date().toISOString().split('T')[0],
-      time: '14:00',
-      service: 'Filling',
-      status: 'Pending',
-      notes: 'Cavity filling',
-    },
-  ])
-
-  const [treatments, setTreatments] = useState<Treatment[]>([
-    {
-      id: '1',
-      name: 'Regular Cleaning',
-      category: 'Cleaning',
-      description: 'Professional teeth cleaning and plaque removal',
-      price: 75,
-      duration: 45,
-      notes: 'Includes fluoride treatment',
-    },
-    {
-      id: '2',
-      name: 'Deep Cleaning',
-      category: 'Cleaning',
-      description: 'Scaling and root planing for gum health',
-      price: 150,
-      duration: 60,
-      notes: 'May require multiple sessions',
-    },
-    {
-      id: '3',
-      name: 'Tooth Extraction',
-      category: 'Extraction',
-      description: 'Safe removal of damaged or decayed teeth',
-      price: 200,
-      duration: 30,
-      notes: 'Includes anesthesia',
-    },
-    {
-      id: '4',
-      name: 'Teeth Whitening',
-      category: 'Whitening',
-      description: 'Professional whitening treatment',
-      price: 250,
-      duration: 60,
-      notes: 'Results last 6-12 months',
-    },
-    {
-      id: '5',
-      name: 'Cavity Filling',
-      category: 'Filling',
-      description: 'Composite filling for cavity repair',
-      price: 120,
-      duration: 30,
-      notes: 'Color-matched to natural teeth',
-    },
-    {
-      id: '6',
-      name: 'Braces Installation',
-      category: 'Orthodontic',
-      description: 'Traditional metal braces for teeth alignment',
-      price: 3000,
-      duration: 90,
-      notes: 'Includes initial consultation',
-    },
-  ])
-
-  const [payments, setPayments] = useState<Payment[]>([
-    {
-      id: '1',
-      patientId: '1',
-      patientName: 'John Doe',
-      amount: 75,
-      method: 'Cash',
-      date: '2024-11-10',
-      status: 'Paid',
-      treatment: 'Cleaning',
-      balance: 0,
-      notes: 'Paid in full',
-    },
-    {
-      id: '2',
-      patientId: '2',
-      patientName: 'Jane Smith',
-      amount: 250,
-      method: 'Bank Transfer',
-      date: '2024-11-08',
-      status: 'Paid',
-      treatment: 'Whitening',
-      balance: 0,
-      notes: 'Transferred',
-    },
-    {
-      id: '3',
-      patientId: '3',
-      patientName: 'Bob Johnson',
-      amount: 200,
-      method: 'Cash',
-      date: '2024-11-05',
-      status: 'Partial',
-      treatment: 'Extraction',
-      balance: 150,
-      notes: '50% down payment',
-    },
-    {
-      id: '4',
-      patientId: '1',
-      patientName: 'John Doe',
-      amount: 120,
-      method: 'GCash',
-      date: '2024-10-28',
-      status: 'Unpaid',
-      treatment: 'Filling',
-      balance: 120,
-      notes: 'Due by next visit',
-    },
-  ])
-
-  const [inventory, setInventory] = useState<InventoryItem[]>([
-    {
-      id: '1',
-      name: 'Nitrile Gloves (Box)',
-      category: 'Gloves',
-      quantity: 20,
-      minThreshold: 30,
-      unit: 'boxes',
-      supplier: 'MediSupply Inc',
-      lastRestocked: '2024-10-15',
-      price: 15,
-    },
-    {
-      id: '2',
-      name: 'Lidocaine Anesthetic',
-      category: 'Anesthesia',
-      quantity: 3,
-      minThreshold: 10,
-      unit: 'vials',
-      supplier: 'PharmaCorp',
-      lastRestocked: '2024-11-01',
-      price: 45,
-    },
-    {
-      id: '3',
-      name: 'Orthodontic Braces Wire',
-      category: 'Braces Wire',
-      quantity: 15,
-      minThreshold: 20,
-      unit: 'spools',
-      supplier: 'OrthoTech',
-      lastRestocked: '2024-10-28',
-      price: 120,
-    },
-    {
-      id: '4',
-      name: 'Composite Filling Material',
-      category: 'Filling Material',
-      quantity: 45,
-      minThreshold: 20,
-      unit: 'syringes',
-      supplier: 'DentalMaterials Co',
-      lastRestocked: '2024-11-05',
-      price: 8,
-    },
-    {
-      id: '5',
-      name: 'Ultrasonic Scaler Tips',
-      category: 'Cleaning Supplies',
-      quantity: 8,
-      minThreshold: 12,
-      unit: 'packs',
-      supplier: 'MediSupply Inc',
-      lastRestocked: '2024-10-20',
-      price: 35,
-    },
-    {
-      id: '6',
-      name: 'Suction Tips',
-      category: 'Cleaning Supplies',
-      quantity: 40,
-      minThreshold: 20,
-      unit: 'packs',
-      supplier: 'DentalCare Ltd',
-      lastRestocked: '2024-11-08',
-      price: 12,
-    },
-  ])
-
-  const [supplyRequests, setSupplyRequests] = useState<SupplyRequest[]>([
-    {
-      id: '1',
-      itemId: '1',
-      itemName: 'Nitrile Gloves (Box)',
-      quantity: 50,
-      requestedBy: 'Sarah Johnson',
-      requestedDate: '2024-11-10',
-      status: 'Pending',
-    },
-    {
-      id: '2',
-      itemId: '2',
-      itemName: 'Lidocaine Anesthetic',
-      quantity: 20,
-      requestedBy: 'Mike Chen',
-      requestedDate: '2024-11-08',
-      status: 'Approved',
-    },
-  ])
-
-  const addPatient = (patientData: Omit<Patient, 'id'>) => {
-    const newPatient: Patient = {
-      ...patientData,
-      id: Date.now().toString(),
+  // load / persist helpers
+  const load = <T,>(key: string, fallback: T) => {
+    if (typeof window === 'undefined') return fallback
+    try {
+      const raw = localStorage.getItem(key)
+      return raw ? (JSON.parse(raw) as T) : fallback
+    } catch {
+      return fallback
     }
-    setPatients([...patients, newPatient])
+  }
+  const persist = (key: string, value: any) => {
+    if (typeof window === 'undefined') return
+    localStorage.setItem(key, JSON.stringify(value))
   }
 
-  const updatePatient = (id: string, updates: Partial<Patient>) => {
-    setPatients(patients.map((p) => (p.id === id ? { ...p, ...updates } : p)))
-  }
+  const [patients, setPatients] = useState<Patient[]>(() =>
+    load<Patient[]>('mw_patients', [
+      {
+        id: 'pat_1',
+        name: 'John Doe',
+        email: 'john@example.com',
+        phone: '09170000001',
+        dob: '1985-03-15',
+        gender: 'M',
+        address: '',
+        lastVisit: '',
+        balance: 0,
+        hasAppointment: false,
+      },
+    ]),
+  )
 
-  const deletePatient = (id: string) => {
-    setPatients(patients.filter((p) => p.id !== id))
-  }
+  const [staff, setStaff] = useState<Staff[]>(() =>
+    load<Staff[]>('mw_staff', [
+      {
+        id: 'st_1',
+        name: 'Admin User',
+        email: 'admin@mw.test',
+        phone: '',
+        role: 'admin',
+        status: 'active',
+        joinDate: new Date().toISOString().split('T')[0],
+      },
+    ]),
+  )
 
-  const getPatientById = (id: string) => {
-    return patients.find((p) => p.id === id)
-  }
+  const [appointments, setAppointments] = useState<Appointment[]>(() =>
+    load<Appointment[]>('mw_appointments', []),
+  )
 
-  const addStaff = (staffData: Omit<Staff, 'id'>) => {
-    const newStaff: Staff = {
-      ...staffData,
-      id: Date.now().toString(),
-    }
-    setStaff([...staff, newStaff])
-  }
+  const [treatments, setTreatments] = useState<Treatment[]>(() =>
+    load<Treatment[]>('mw_treatments', []),
+  )
 
-  const updateStaff = (id: string, updates: Partial<Staff>) => {
-    setStaff(staff.map((s) => (s.id === id ? { ...s, ...updates } : s)))
-  }
+  const [payments, setPayments] = useState<Payment[]>(() =>
+    load<Payment[]>('mw_payments', []),
+  )
 
-  const deleteStaff = (id: string) => {
-    setStaff(staff.filter((s) => s.id !== id))
-  }
+  const [inventory, setInventory] = useState<InventoryItem[]>(() =>
+    load<InventoryItem[]>('mw_inventory', []),
+  )
 
-  const getStaffById = (id: string) => {
-    return staff.find((s) => s.id === id)
-  }
+  const [supplyRequests, setSupplyRequests] = useState<SupplyRequest[]>(() =>
+    load<SupplyRequest[]>('mw_supply', []),
+  )
 
-  const addAppointment = (appointmentData: Omit<Appointment, 'id'>) => {
-    const newAppointment: Appointment = {
-      ...appointmentData,
-      id: Date.now().toString(),
-    }
-    setAppointments([...appointments, newAppointment])
-  }
+  // persist
+  useEffect(() => persist('mw_patients', patients), [patients])
+  useEffect(() => persist('mw_staff', staff), [staff])
+  useEffect(() => persist('mw_appointments', appointments), [appointments])
+  useEffect(() => persist('mw_treatments', treatments), [treatments])
+  useEffect(() => persist('mw_payments', payments), [payments])
+  useEffect(() => persist('mw_inventory', inventory), [inventory])
+  useEffect(() => persist('mw_supply', supplyRequests), [supplyRequests])
 
-  const updateAppointment = (id: string, updates: Partial<Appointment>) => {
-    setAppointments(
-      appointments.map((a) => (a.id === id ? { ...a, ...updates } : a))
-    )
+  // Patients
+  const addPatient = (p: Omit<Patient, 'id'>) => {
+    const patient: Patient = { ...p, id: genId('pat_') }
+    setPatients((s) => [...s, patient])
+    return patient
   }
+  const updatePatient = (id: string, patch: Partial<Patient>) =>
+    setPatients((s) => s.map((it) => (it.id === id ? { ...it, ...patch } : it)))
+  const deletePatient = (id: string) => setPatients((s) => s.filter((p) => p.id !== id))
+  const getPatientById = (id: string) => patients.find((p) => p.id === id)
 
-  const deleteAppointment = (id: string) => {
-    setAppointments(appointments.filter((a) => a.id !== id))
+  // Staff
+  const addStaff = (s: Omit<Staff, 'id'>) => {
+    const nv = { ...s, id: genId('st_') }
+    setStaff((cur) => [...cur, nv])
+    return nv
   }
+  const updateStaff = (id: string, patch: Partial<Staff>) =>
+    setStaff((s) => s.map((it) => (it.id === id ? { ...it, ...patch } : it)))
+  const deleteStaff = (id: string) => setStaff((s) => s.filter((it) => it.id !== id))
+  const getStaffById = (id: string) => staff.find((s) => s.id === id)
 
-  const getAppointmentById = (id: string) => {
-    return appointments.find((a) => a.id === id)
+  // Appointments
+  const addAppointment = (a: Omit<Appointment, 'id'>) => {
+    const nv: Appointment = { ...a, id: genId('apt_') }
+    setAppointments((s) => [...s, nv])
+    return nv
   }
+  const updateAppointment = (id: string, patch: Partial<Appointment>) =>
+    setAppointments((s) => s.map((it) => (it.id === id ? { ...it, ...patch } : it)))
+  const deleteAppointment = (id: string) => setAppointments((s) => s.filter((it) => it.id !== id))
+  const getAppointmentById = (id: string) => appointments.find((a) => a.id === id)
 
-  const addTreatment = (treatmentData: Omit<Treatment, 'id'>) => {
-    const newTreatment: Treatment = {
-      ...treatmentData,
-      id: Date.now().toString(),
-    }
-    setTreatments([...treatments, newTreatment])
+  // Treatments
+  const addTreatment = (t: Omit<Treatment, 'id'>) => {
+    const nv: Treatment = { ...t, id: genId('tr_') }
+    setTreatments((s) => [...s, nv])
+    return nv
   }
+  const updateTreatment = (id: string, patch: Partial<Treatment>) =>
+    setTreatments((s) => s.map((it) => (it.id === id ? { ...it, ...patch } : it)))
+  const deleteTreatment = (id: string) => setTreatments((s) => s.filter((it) => it.id !== id))
+  const getTreatmentById = (id: string) => treatments.find((t) => t.id === id)
 
-  const updateTreatment = (id: string, updates: Partial<Treatment>) => {
-    setTreatments(
-      treatments.map((t) => (t.id === id ? { ...t, ...updates } : t))
-    )
+  // Payments
+  const addPayment = (p: Omit<Payment, 'id' | 'date'> & { date?: string }) => {
+    const nv: Payment = {
+      ...p,
+      id: genId('pay_'),
+      date: p.date ?? new Date().toISOString().split('T')[0],
+    } as Payment
+    setPayments((s) => [...s, nv])
+    return nv
   }
+  const updatePayment = (id: string, patch: Partial<Payment>) =>
+    setPayments((s) => s.map((it) => (it.id === id ? { ...it, ...patch } : it)))
+  const deletePayment = (id: string) => setPayments((s) => s.filter((it) => it.id !== id))
+  const getPaymentById = (id: string) => payments.find((p) => p.id === id)
 
-  const deleteTreatment = (id: string) => {
-    setTreatments(treatments.filter((t) => t.id !== id))
+  // Inventory
+  const addInventoryItem = (it: Omit<InventoryItem, 'id' | 'lastRestocked'>) => {
+    const nv: InventoryItem = { ...it, id: genId('inv_'), lastRestocked: new Date().toISOString() }
+    setInventory((s) => [...s, nv])
+    return nv
   }
+  const updateInventoryItem = (id: string, patch: Partial<InventoryItem>) =>
+    setInventory((s) => s.map((it) => (it.id === id ? { ...it, ...patch } : it)))
+  const deleteInventoryItem = (id: string) => setInventory((s) => s.filter((it) => it.id !== id))
+  const getInventoryItemById = (id: string) => inventory.find((it) => it.id === id)
 
-  const getTreatmentById = (id: string) => {
-    return treatments.find((t) => t.id === id)
+  // Supply requests
+  const addSupplyRequest = (r: Omit<SupplyRequest, 'id'>) => {
+    const nv = { ...r, id: genId('sr_') }
+    setSupplyRequests((s) => [...s, nv])
+    return nv
   }
-
-  const addPayment = (paymentData: Omit<Payment, 'id'>) => {
-    const newPayment: Payment = {
-      ...paymentData,
-      id: Date.now().toString(),
-    }
-    setPayments([...payments, newPayment])
-  }
-
-  const updatePayment = (id: string, updates: Partial<Payment>) => {
-    setPayments(payments.map((p) => (p.id === id ? { ...p, ...updates } : p)))
-  }
-
-  const deletePayment = (id: string) => {
-    setPayments(payments.filter((p) => p.id !== id))
-  }
-
-  const getPaymentById = (id: string) => {
-    return payments.find((p) => p.id === id)
-  }
-
-  const addInventoryItem = (itemData: Omit<InventoryItem, 'id' | 'lastRestocked'>) => {
-    const newItem: InventoryItem = {
-      ...itemData,
-      id: Date.now().toString(),
-      lastRestocked: new Date().toISOString().split('T')[0],
-    }
-    setInventory([...inventory, newItem])
-  }
-
-  const updateInventoryItem = (id: string, updates: Partial<InventoryItem>) => {
-    setInventory(
-      inventory.map((item) => (item.id === id ? { ...item, ...updates } : item))
-    )
-  }
-
-  const deleteInventoryItem = (id: string) => {
-    setInventory(inventory.filter((item) => item.id !== id))
-  }
-
-  const getInventoryItemById = (id: string) => {
-    return inventory.find((item) => item.id === id)
-  }
-
-  const addSupplyRequest = (requestData: Omit<SupplyRequest, 'id'>) => {
-    const newRequest: SupplyRequest = {
-      ...requestData,
-      id: Date.now().toString(),
-    }
-    setSupplyRequests([...supplyRequests, newRequest])
-  }
-
-  const updateSupplyRequest = (id: string, updates: Partial<SupplyRequest>) => {
-    setSupplyRequests(
-      supplyRequests.map((r) => (r.id === id ? { ...r, ...updates } : r))
-    )
-  }
-
-  const deleteSupplyRequest = (id: string) => {
-    setSupplyRequests(supplyRequests.filter((r) => r.id !== id))
-  }
+  const updateSupplyRequest = (id: string, patch: Partial<SupplyRequest>) =>
+    setSupplyRequests((s) => s.map((it) => (it.id === id ? { ...it, ...patch } : it)))
+  const deleteSupplyRequest = (id: string) => setSupplyRequests((s) => s.filter((it) => it.id !== id))
 
   const value: AppContextType = {
     patients,
@@ -598,48 +301,48 @@ export function AppProvider({ children }: { children: ReactNode }) {
     updatePatient,
     deletePatient,
     getPatientById,
+
     staff,
     addStaff,
     updateStaff,
     deleteStaff,
     getStaffById,
+
     appointments,
     addAppointment,
     updateAppointment,
     deleteAppointment,
     getAppointmentById,
+
     treatments,
     addTreatment,
     updateTreatment,
     deleteTreatment,
     getTreatmentById,
+
     payments,
     addPayment,
     updatePayment,
     deletePayment,
     getPaymentById,
+
     inventory,
     addInventoryItem,
     updateInventoryItem,
     deleteInventoryItem,
     getInventoryItemById,
+
     supplyRequests,
     addSupplyRequest,
     updateSupplyRequest,
     deleteSupplyRequest,
   }
 
-  return (
-    <AppContext.Provider value={value}>
-      {children}
-    </AppContext.Provider>
-  )
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 }
 
 export function useAppContext() {
-  const context = useContext(AppContext)
-  if (context === undefined) {
-    throw new Error('useAppContext must be used within an AppProvider')
-  }
-  return context
+  const ctx = useContext(AppContext)
+  if (!ctx) throw new Error('useAppContext must be used within AppProvider')
+  return ctx
 }

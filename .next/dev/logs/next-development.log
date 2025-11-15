@@ -7,3 +7,9 @@
 [00:06:55.394] Server  LOG      ✓ Compiled in 7.7s
 [00:07:05.632] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
 [00:07:11.822] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:11:21.897] Server  LOG      ✓ Compiled in 1128ms
+[00:11:32.684] Server  LOG      ✓ Compiled in 2.3s
+[00:18:32.961] Server  LOG      ✓ Compiled in 1170ms
+[00:18:33.081] Server  WARN     ⚠ Fast Refresh had to perform a full reload when ./context/app-context.tsx changed. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+[00:18:42.656] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:19:24.074] Server  LOG      ✓ Compiled in 683ms

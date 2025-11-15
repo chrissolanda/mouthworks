@@ -1,38 +1,57 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { CalendarView } from './calendar-view'
 import { AppointmentList } from './appointment-list'
 import { AppointmentModal } from './appointment-modal'
-import { Plus, Calendar } from 'lucide-react'
-import { useAppContext } from '@/context/app-context'
+import { CalendarView } from './calendar-view'
+import { PaymentModal } from '@/components/payments/payment-modal'
+import { useAppContext, type Appointment } from '@/context/app-context'
 
 interface AppointmentManagementProps {
   userRole: string
 }
 
 export function AppointmentManagement({ userRole }: AppointmentManagementProps) {
-  const { appointments, addAppointment, updateAppointment, deleteAppointment, patients } = useAppContext()
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0])
+  const {
+    appointments,
+    addAppointment,
+    updateAppointment,
+    deleteAppointment,
+    patients,
+    addPatient,
+    addPayment,
+  } = useAppContext()
+
+  const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0])
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedAppointment, setSelectedAppointment] = useState<any>(null)
-  const [viewMode, setViewMode] = useState<'calendar' | 'list'>('calendar')
+  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null)
+  const [viewMode, setViewMode] = useState<'calendar' | 'list'>('list')
+
+  const [showPaymentModal, setShowPaymentModal] = useState(false)
 
   const services = ['Cleaning', 'Extraction', 'Whitening', 'Orthodontic', 'Root Canal', 'Filling']
 
   const todayAppointments = appointments.filter((a) => a.date === selectedDate)
 
-  const handleAddAppointment = (formData: any) => {
-    addAppointment({
-      ...formData,
-      status: 'Pending',
-    })
+  const handleAddAppointment = (formData: Omit<Appointment, 'id'> | any) => {
+    const payload: Omit<Appointment, 'id'> = {
+      patientId: formData.patientId || '',
+      patientName:
+        formData.patientName ||
+        (patients.find((p) => p.id === formData.patientId)?.name ?? formData.patientName ?? ''),
+      date: formData.date,
+      time: formData.time,
+      service: formData.service,
+      doctorId: formData.doctorId ?? null,
+      status: formData.status ?? 'Pending',
+      notes: formData.notes ?? '',
+    }
+    addAppointment(payload)
     setIsModalOpen(false)
   }
 
-  const handleUpdateAppointment = (id: string, formData: any) => {
+  const handleUpdateAppointment = (id: string, formData: Partial<Appointment>) => {
     updateAppointment(id, formData)
     setSelectedAppointment(null)
     setIsModalOpen(false)
@@ -41,98 +60,88 @@ export function AppointmentManagement({ userRole }: AppointmentManagementProps) 
   const handleDeleteAppointment = (id: string) => {
     deleteAppointment(id)
     setSelectedAppointment(null)
+    setIsModalOpen(false)
   }
 
-  const handleStatusChange = (id: string, newStatus: any) => {
+  const handleStatusChange = (id: string, newStatus: Appointment['status']) => {
     updateAppointment(id, { status: newStatus })
+  }
+
+  // Quick Add Patient (simple prompt to avoid modal prop mismatches)
+  const handleQuickAddPatient = () => {
+    const name = window.prompt('New patient name')
+    if (!name) return
+    const newPatient = addPatient({
+      name,
+      email: '',
+      phone: '',
+      dob: '',
+      gender: 'Other',
+      address: '',
+      lastVisit: '',
+      balance: 0,
+      hasAppointment: false,
+    })
+    // open appointment modal and preselect this patient
+    setSelectedAppointment(null)
+    setIsModalOpen(true)
+    // If you want to auto-fill the appointment modal with the new patient,
+    // you'd need to pass that to the modal. The appointment modal supports selecting patients from context.
+  }
+
+  const handleAddPayment = (data: any) => {
+    addPayment(data)
+    setShowPaymentModal(false)
   }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Appointment Management</h1>
-          <p className="text-slate-600 mt-1">Book, reschedule, and manage appointments</p>
+          <h1 className="text-3xl font-bold">Appointments</h1>
+          <p className="text-sm text-slate-600">Create and manage patient appointments</p>
         </div>
-        <Button
-          onClick={() => {
-            setSelectedAppointment(null)
-            setIsModalOpen(true)
-          }}
-          className="bg-teal-600 hover:bg-teal-700 text-white"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          New Appointment
+
+        <div className="flex items-center gap-3">
+          <Button onClick={handleQuickAddPatient} variant="outline">
+            Add Patient
+          </Button>
+
+          <Button onClick={() => setShowPaymentModal(true)} variant="outline">
+            Record Payment
+          </Button>
+
+          <Button
+            onClick={() => {
+              setSelectedAppointment(null)
+              setIsModalOpen(true)
+            }}
+            className="bg-teal-600 hover:bg-teal-700 text-white"
+          >
+            Add Appointment
+          </Button>
+        </div>
+      </div>
+
+      <div className="flex gap-3 mb-4">
+        <Button variant={viewMode === 'list' ? 'default' : 'ghost'} onClick={() => setViewMode('list')}>
+          List
+        </Button>
+        <Button variant={viewMode === 'calendar' ? 'default' : 'ghost'} onClick={() => setViewMode('calendar')}>
+          Calendar
         </Button>
       </div>
 
-      <div className="flex gap-2">
-        <button
-          onClick={() => setViewMode('calendar')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition ${
-            viewMode === 'calendar'
-              ? 'bg-teal-600 text-white'
-              : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
-          }`}
-        >
-          <Calendar className="w-4 h-4" />
-          Calendar
-        </button>
-        <button
-          onClick={() => setViewMode('list')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition ${
-            viewMode === 'list'
-              ? 'bg-teal-600 text-white'
-              : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
-          }`}
-        >
-          List
-        </button>
-      </div>
-
       {viewMode === 'calendar' ? (
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          <div className="lg:col-span-3">
-            <CalendarView
-              appointments={appointments}
-              selectedDate={selectedDate}
-              onDateSelect={setSelectedDate}
-              onAppointmentSelect={(apt) => {
-                setSelectedAppointment(apt)
-                setIsModalOpen(true)
-              }}
-            />
-          </div>
-
-          <div>
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Today's Appointments</CardTitle>
-                <CardDescription>{todayAppointments.length} appointments</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                {todayAppointments.length === 0 ? (
-                  <p className="text-sm text-slate-500">No appointments today</p>
-                ) : (
-                  todayAppointments.map((apt) => (
-                    <button
-                      key={apt.id}
-                      onClick={() => {
-                        setSelectedAppointment(apt)
-                        setIsModalOpen(true)
-                      }}
-                      className="w-full text-left p-2 rounded hover:bg-slate-100 transition"
-                    >
-                      <p className="font-medium text-sm text-slate-900">{apt.time}</p>
-                      <p className="text-xs text-slate-600">{apt.patientName}</p>
-                      <p className="text-xs text-slate-500">{apt.service}</p>
-                    </button>
-                  ))
-                )}
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+        <CalendarView
+          appointments={appointments}
+          selectedDate={selectedDate}
+          onDateSelect={(d) => setSelectedDate(d)}
+          onAppointmentSelect={(apt) => {
+            setSelectedAppointment(apt)
+            setIsModalOpen(true)
+          }}
+        />
       ) : (
         <AppointmentList
           appointments={appointments}
@@ -149,18 +158,22 @@ export function AppointmentManagement({ userRole }: AppointmentManagementProps) 
           appointment={selectedAppointment}
           services={services}
           patients={patients}
-          onSave={selectedAppointment
-            ? (data) => handleUpdateAppointment(selectedAppointment.id, data)
-            : handleAddAppointment}
-          onDelete={
-            selectedAppointment
-              ? () => handleDeleteAppointment(selectedAppointment.id)
-              : undefined
+          onSave={(data: any) =>
+            selectedAppointment ? handleUpdateAppointment(selectedAppointment.id, data) : handleAddAppointment(data)
           }
+          onDelete={selectedAppointment ? () => handleDeleteAppointment(selectedAppointment.id) : undefined}
           onClose={() => {
             setIsModalOpen(false)
             setSelectedAppointment(null)
           }}
+        />
+      )}
+
+      {showPaymentModal && (
+        <PaymentModal
+          patient={null}
+          onSave={handleAddPayment}
+          onClose={() => setShowPaymentModal(false)}
         />
       )}
     </div>
