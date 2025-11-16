@@ -30,6 +30,18 @@ interface StaffModalProps {
   isEditing?: boolean
 }
 
+// Fixed: explicitly type form state so TS knows `role` and `status` are unions,
+// not single literal narrowed types (prevents comparisons like role === 'dentist' being flagged).
+type StaffForm = {
+  name: string
+  email: string
+  phone: string
+  role: Staff['role']
+  specialization: string
+  status: Staff['status']
+  joinDate: string
+}
+
 export function StaffModal({
   open,
   onClose,
@@ -37,13 +49,13 @@ export function StaffModal({
   initialData,
   isEditing,
 }: StaffModalProps) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<StaffForm>({
     name: '',
     email: '',
     phone: '',
-    role: 'receptionist' as const,
+    role: 'receptionist',
     specialization: '',
-    status: 'active' as const,
+    status: 'active',
     joinDate: new Date().toISOString().split('T')[0],
   })
 
@@ -72,7 +84,15 @@ export function StaffModal({
   }, [initialData, open])
 
   const handleSubmit = () => {
-    onSubmit(formData)
+    onSubmit({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      role: formData.role,
+      specialization: formData.specialization || undefined,
+      status: formData.status,
+      joinDate: formData.joinDate,
+    })
   }
 
   return (
@@ -170,7 +190,7 @@ export function StaffModal({
               onChange={(e) =>
                 setFormData({
                   ...formData,
-                  status: e.target.value as 'active' | 'inactive',
+                  status: e.target.value as Staff['status'],
                 })
               }
               className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
